@@ -9,7 +9,7 @@ sfImageTransformPlugin
 ## Installation ##
  * Get the plugin
 
-        symfony plugin:install  sfDoctrineActAsSluggableAttachmentPlugin --stability=beta
+        symfony plugin:install  sfDoctrineActAsSluggableAttachmentPlugin --stability=alpha
 
  * Enable the plugin in your project
 
@@ -106,7 +106,7 @@ By default the plugin has thumbnailing of images set to true
 
  * Get the attachment url
 
-        $product->getAttachmentURL("thumb");
+        $product->getAttachmentURL();
 
 ## NOTE ##
 
@@ -114,7 +114,7 @@ This plugin:
 
  * support only one attachment per model
  * want to be as simple to use as paperclip plugin from ruby on rails framework
- * is in early beta and has not been tested at all.
+ * is in early alpha release and has not been tested at all.
 
 ## TODO ##
 1. Testing
