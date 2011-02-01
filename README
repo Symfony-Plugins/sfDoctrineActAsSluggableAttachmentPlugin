@@ -1,0 +1,124 @@
+# sfDoctrineActAsSluggableAttachmentPlugin #
+
+## Overview ##
+sfDoctrineActAsSluggableAttachmentPlugin let you bind an uploaded file to a model and  rename the file into a slug version. It also handle thumbnailing of images.
+
+## Requirement ##
+sfImageTransformPlugin
+
+## Installation ##
+ * Get the plugin
+
+        symfony plugin:install  sfDoctrineActAsSluggableAttachmentPlugin --stability=beta
+
+ * Enable the plugin in your project
+
+        [php]
+        //config/ProjectConfiguration.class.php
+        class ProjectConfiguration extends sfProjectConfiguration
+        {
+          public function setup()
+          {
+            $this->enablePlugins('sfDoctrinePlugin', 'sfImageTransformPlugin', 'sfDoctrineActAsSluggableAttachmentPlugin');
+          }
+        }
+
+ * Edit config/doctrine/schema.yml
+
+        Product:
+          actAs: [SluggableAttachment]
+
+ * Rebuild the model:
+
+        ./symfony doctrine-build-all
+
+ * clear cache:
+
+        ./symfony cc
+
+## Usage ##
+### Attachment with thumbnailing ###
+
+By default the plugin has thumbnailing of images set to true
+
+ * Specify the style of the thumbnail in lib/app.yml ( You may need to create the file).
+
+        all:
+          actAsDoctrineSluggableAttachment:
+            models:
+              product:
+                original: { size: 1024x768, thumbnailing: scale, force: false }
+                thumb: { size: 100x100, thumbnailing: center, force: true }
+                mini: { size: 25x25, thumbnailing: fit, force: true }
+
+     * size - The width/height of the thumbnail
+     * thumbnailing - See sfImageTransformPlugin (sfImage->thumbnail) for documentation
+     * force - When set to false, the image will not be resize if the original size is smaller than the specified size.
+
+ * Edit the lib/form/ProductForm.class.php
+
+        [php]
+        //lib/form/doctrine/ProductForm.class.php
+        class ProductForm extends BaseProductForm
+        {
+          public function configure()
+          {
+            $this->useFields(array(..., "attachment_filename"));
+            $this->widgetSchema['attachment_filename'] = new sfWidgetFormInputFile();
+            $this->validatorSchema['attachment_filename'] =
+              new sfValidatorDoctrineSluggableAttachment($this->getObject());
+          }
+        }
+ * Get the attachment url
+
+        [php]
+        $product->getAttachmentURL("thumb");
+
+     * getAttachmentURL take the style of the thumbnail as argument. If you don't specify anything the original style will be fetched.
+
+ * Task to re-create all thumbnail from the original image uploaded
+
+        ./symfony sluggable-attachment:refresh-thumbnail product
+
+### Attachment without thumbnailing ###
+ * If you don't have to create thumbnail, you must change your tables schema in config/doctrine/schema.yml to:
+
+        Product:
+          actAs:
+            SluggableAttachment:
+              image: false
+              mime_type: [application/msword]
+
+ * Edit the lib/form/doctrine/ProductForm.class.php
+
+        [php]
+        //lib/form/ProductForm.class.php
+        class ProductForm extends BaseProductForm
+        {
+          public function configure()
+          {
+            $this->useFields(array(..., "attachment_filename"));
+            $this->widgetSchema['attachment_filename'] = new sfWidgetFormInputFile();
+            $this->validatorSchema['attachment_filename'] =
+              new sfValidatorDoctrineSluggableAttachment($this->getObject());
+          }
+        }
+
+ * Get the attachment url
+
+        $product->getAttachmentURL("thumb");
+
+## NOTE ##
+
+This plugin:
+
+ * support only one attachment per model
+ * want to be as simple to use as paperclip plugin from ruby on rails framework
+ * is in early beta and has not been tested at all.
+
+## TODO ##
+1. Testing
+2. Documentation
+3. Specify an alternate image when no image is uploaded
+4. Task - deletes files/folder that are not link with a model
+5. Convert BMP to JPEG when using Image Magick
