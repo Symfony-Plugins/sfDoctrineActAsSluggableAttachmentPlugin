@@ -1,0 +1,11 @@
+#thumbnailing type
+#  fit
+#  scale
+#  inflate, deflate.
+#  left, right, top, bottom, center, bottom-left, bottom-right, top-left, top-right
+#  none
+
+all:
+  actAsDoctrineSluggableAttachment:
+#      model_name:
+#        thumb: { size: 100x100, thumbnailing: center }
