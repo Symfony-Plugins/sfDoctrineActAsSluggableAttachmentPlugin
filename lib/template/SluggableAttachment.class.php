@@ -203,7 +203,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
     }
   }
 
-  protected function getAttachmentFieldName($field)
+  public function getAttachmentFieldName($field)
   {
     return $filename = $this->_options["name"] .
     $this->_options["fields"][$field]["postfix"];
