@@ -145,7 +145,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
   {
     $is_image = $this->_options["image"];
     $style = ($is_image && $style==null)? $this->_options["image_original_dir"] : $style;
-    $style = "/".$style;
+    $style = $is_image ? "/".$style : "";
     $url = "/".basename(sfConfig::get('sf_upload_dir'))."/";
     $url .= sfInflector::underscore(get_class($this->getInvoker()));
     return $url.$style."/".$this->getFullFilename();
