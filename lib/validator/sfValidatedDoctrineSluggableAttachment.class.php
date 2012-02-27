@@ -16,8 +16,7 @@ class sfValidatedDoctrineSluggableAttachment extends sfValidatedFile
 
   public function save($file = null, $fileMode = 0666, $create = true, $dirMode = 0777)
   {
-    $this->_record->setAttachment($this->getOriginalName(),
-      $this->getExtension());
+    $this->_record->setAttachment($this->getOriginalName(), $this->getExtension());
 
     if ($this->_record->isAttachmentImage())
     {
@@ -29,5 +28,11 @@ class sfValidatedDoctrineSluggableAttachment extends sfValidatedFile
     }
     
     return $this->_record->getAttachmentField("filename");
+  }
+  
+  public function getExtension($default = '')
+  {
+    preg_match("/\.([^\.]+)$/", $this->originalName, $matches);  
+    return reset($matches);
   }
 }
