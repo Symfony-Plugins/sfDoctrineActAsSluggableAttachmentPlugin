@@ -32,7 +32,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
     "mime_type" => array(),
     "required" => true
   );
-  
+
   protected $_image_mime_type = array(
     'image/pjpeg',
     'image/jpeg',
@@ -135,7 +135,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
   {
     return $this->_options["required"];
   }
-  
+
   public function isAttachmentImage()
   {
     return $this->_options["image"];
@@ -194,12 +194,18 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
       {
         $path = $this->getAttachmentPath(true).DIRECTORY_SEPARATOR.$style_name;
         $path .= DIRECTORY_SEPARATOR.$this->getFullFilename($old);
-        unlink($path);
+        if (file_exists($path)) {
+          unlink($path);
+        }
       }
     }
     else
     {
-      unlink($this->getAttachmentPath().DIRECTORY_SEPARATOR.$this->getFullFilename($old));
+      $path = $this->getAttachmentPath(true);
+      $path .= DIRECTORY_SEPARATOR.$this->getFullFilename($old);
+      if (file_exists($path)) {
+        unlink($path);
+      }
     }
   }
 
@@ -208,7 +214,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
     return $filename = $this->_options["name"] .
     $this->_options["fields"][$field]["postfix"];
   }
-  
+
   protected function getUniqueSlug($filename, $extension)
   {
     $field_name = $this->getAttachmentFieldName("filename");
