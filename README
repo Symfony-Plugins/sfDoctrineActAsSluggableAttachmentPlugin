@@ -47,13 +47,14 @@ By default the plugin has thumbnailing of images set to true
           actAsDoctrineSluggableAttachment:
             models:
               product:
-                original: { size: 1024x768, thumbnailing: scale, force: false }
-                thumb: { size: 100x100, thumbnailing: center, force: true }
-                mini: { size: 25x25, thumbnailing: fit, force: true }
+                original: { size: 1024x768, thumbnailing: scale, force: false, quality: 95 }
+                thumb: { size: 100x100, thumbnailing: center, force: true, quality: 90 }
+                mini: { size: 25x25, thumbnailing: fit, force: true, quality: 75 }
 
-     * size - The width/height of the thumbnail
-     * thumbnailing - See sfImageTransformPlugin (sfImage->thumbnail) for documentation
+     * size - The width/height of the thumbnail.
+     * thumbnailing - See sfImageTransformPlugin (sfImage->thumbnail) for documentation.
      * force - When set to false, the image will not be resize if the original size is smaller than the specified size.
+     * quality - Quality of image transformed.
 
  * Edit the lib/form/ProductForm.class.php
 
@@ -65,8 +66,7 @@ By default the plugin has thumbnailing of images set to true
           {
             $this->useFields(array(..., "attachment_filename"));
             $this->widgetSchema['attachment_filename'] = new sfWidgetFormInputFile();
-            $this->validatorSchema['attachment_filename'] =
-              new sfValidatorDoctrineSluggableAttachment($this->getObject());
+            $this->validatorSchema['attachment_filename'] = new sfValidatorDoctrineSluggableAttachment($this->getObject());
           }
         }
  * Get the attachment url
@@ -99,8 +99,7 @@ By default the plugin has thumbnailing of images set to true
           {
             $this->useFields(array(..., "attachment_filename"));
             $this->widgetSchema['attachment_filename'] = new sfWidgetFormInputFile();
-            $this->validatorSchema['attachment_filename'] =
-              new sfValidatorDoctrineSluggableAttachment($this->getObject());
+            $this->validatorSchema['attachment_filename'] = new sfValidatorDoctrineSluggableAttachment($this->getObject());
           }
         }
 

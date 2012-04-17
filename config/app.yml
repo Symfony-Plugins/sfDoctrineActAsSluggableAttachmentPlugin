@@ -8,4 +8,4 @@
 all:
   actAsDoctrineSluggableAttachment:
 #      model_name:
-#        thumb: { size: 100x100, thumbnailing: center }
+#        thumb: { size: 100x100, thumbnailing: center, quality: 90 }

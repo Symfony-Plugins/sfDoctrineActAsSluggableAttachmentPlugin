@@ -164,6 +164,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
   {
     foreach($this->getAttachmentStyles() as $styleNane => $style)
     {
+      $quality = isset($style["quality"]) ? $style["quality"] : 90;
       $img = new sfImage($input_image);
       $directory = dirname($path).DIRECTORY_SEPARATOR.$styleNane;
       $this->checkImageDirectory($directory);
@@ -175,6 +176,7 @@ class Doctrine_Template_SluggableAttachment extends Doctrine_Template
           $img->thumbnail($dimension[0], $dimension[1], $style["thumbnailing"]);
         }
       }
+      $img->setQuality($quality);
       $img->saveAs($directory.DIRECTORY_SEPARATOR.$this->getFullFilename());
     }
   }
